@@ -1,0 +1,159 @@
+#include <iostream>
+#include <math.h>
+#include "extention.hpp"
+using namespace std;
+using namespace ext;
+
+enum Grade
+{
+	F = 1,   // неявка
+	D = 2,  // неудовлетворительно
+	C = 3,  // удовлетворительно
+	B = 4,  // хорошо
+	A = 5,  // отлично      
+};
+
+struct Student
+{
+	int Id;
+	Grade Mark;
+	//char Name[7];
+	char Name;
+};
+
+
+int main()
+{
+	setlocale(0, "");
+
+	Student mas[100], mas1[100];
+	int choice = 0, midmark = 0, moda = 0;
+		
+	for (int i = 0; i < 99; i++)
+	{
+		mas[i].Id = GetRandomValue(1, 1000);
+		mas[i].Mark = static_cast<Grade>(GetRandomValue(1, 5));
+		
+		/*int length = GetRandomValue(1, 6);
+		for (int j = 0; j < length; ++i)
+		{
+			int symbol = GetRandomValue('a', 'z');
+			mas[i].Name[j] = symbol;
+		}*/
+
+		/*for (int j = length; j < 7; j++)
+		{
+			mas[i].Name[j] = '\0';
+
+		}*/
+
+		mas[i].Name = GetRandomValue('a', 'z');
+		
+		cout << mas[i].Id << " " << mas[i].Mark << " " << mas[i].Name << endl;
+		
+	}
+
+	
+	cout << " 1 - сортировка по id, 2 - по оценке, 3 - по имени";
+	cin >> choice;
+
+	cout << endl << endl << endl;
+
+	if (choice == 1)
+	{
+		for (int i = 0; i < 100; i++)
+		{
+			bool stop = false;
+
+			for (int j = 0; j < 100 - i; j++)
+			{
+				if (mas[j].Id > mas[j + 1].Id)
+				{
+					int exchange = mas[j].Id;
+					mas[j].Id = mas[j + 1].Id;
+					mas[j + 1].Id = exchange;
+					stop = true;
+				}
+			}
+
+			if (stop == false)
+				break;
+		}
+		for (int i = 0; i < 100; i++)
+			cout << mas[i].Id <<  " " << mas[i].Name << " " << mas[i].Mark << endl;
+	}
+	else if (choice == 2)
+	{
+		for (int i = 0; i < 100; i++)
+		{
+			bool stop = false;
+
+			for (int j = 0; j < 100 - i; j++)
+			{
+				if (mas[j].Mark > mas[j + 1].Mark)
+				{
+					int exchange = static_cast<Grade>(mas[j].Mark);
+					mas[j].Mark = mas[j + 1].Mark;
+					mas[j + 1].Mark = static_cast<Grade>(exchange);
+					stop = true;
+				}
+			}
+
+			if (stop == false)
+				break;
+		}
+		for (int i = 0; i < 100; i++)
+			cout << mas[i].Mark << " " << mas[i].Name << " " << mas[i].Id  << endl;
+	}
+	else
+	{
+		for (int i = 0; i < 100; i++)
+		{
+			bool stop = false;
+
+			for (int j = 0; j < 100 - i; j++)
+			{
+				if (mas[j].Name > mas[j + 1].Name)
+				{
+					int exchange = static_cast<Grade>(mas[j].Name);
+					mas[j].Name = mas[j + 1].Name;
+					mas[j + 1].Name = static_cast<Grade>(exchange);
+					stop = true;
+				}
+			}
+
+			if (stop == false)
+				break;
+		}
+		for (int i = 0; i < 100; i++)
+			cout << mas[i].Name  << " " << mas[i].Mark << " " << mas[i].Id << endl;
+	}
+
+
+	for (int i = 1; i < 6; i++)
+	{
+		int nummarks = 0;
+		for (int j = 0; j < 10; j++)
+		{
+			if (i == mas[j].Mark)
+				nummarks += 1;
+		}
+
+		if (nummarks > moda)
+			moda = nummarks;
+	}
+		
+	cout << endl << "Мода оценок: " << moda << endl;
+
+	for (int i = 0; i < 75; i++)
+	{
+		midmark += mas[i].Mark;
+
+		if (i == 24)
+			cout << "Вам нужно получать " << floor(midmark / 25) + 1 << " " << midmark << " -ки, чтобы быть лучше 25% студентов, ";
+		if (i == 49)
+			cout << floor(midmark / 50) + 1 << " " << midmark << "-ки, чтобы быть лучше 50% студентов и ";
+		if (i == 74)
+			cout << floor(midmark / 75) + 1 << " " << midmark << "-ки, чтобы быть лучше 75% студентов";
+	}
+}
